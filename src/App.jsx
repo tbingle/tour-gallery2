@@ -9,25 +9,25 @@ const App = () => {
   const [error, setError] = useState(null);
   const [selectedTour, setSelectedTour] = useState('All');
 
-  useEffect(() => {
-    const fetchTours = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('https://api.allorigins.win/raw?url=https://course-api.com/react-tours-project');
-        if (!response.ok) {
-          throw new Error('Failed to fetch tours');
-        }
-        const data = await response.json();
-        setTours(data);
-        setFilteredTours(data);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  const fetchTours = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('https://api.allorigins.win/raw?url=https://course-api.com/react-tours-project');
+      if (!response.ok) {
+        throw new Error('Failed to fetch tours');
       }
-    };
+      const data = await response.json();
+      setTours(data);
+      setFilteredTours(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchTours();
   }, []);
 
@@ -51,14 +51,14 @@ const App = () => {
   }
 
   if (error) {
-    return <h2>Error: {error}</h2>;//Error handling
+    return <h2>Error: {error}</h2>;
   }
 
   if (filteredTours.length === 0) {
     return (
       <div>
         <h2>No Tours Left</h2>
-        <button onClick={() => window.location.reload()}>Refresh</button>
+        <button onClick={fetchTours}>Refresh</button>
       </div>
     );
   }
