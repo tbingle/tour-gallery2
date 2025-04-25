@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Gallery from './Components/Gallery';  // Import Gallery component
-import './App.css'; // Make sure to import App.css for general styling
+import Gallery from './Components/Gallery';
+import './App.css';
 
 const App = () => {
   const [tours, setTours] = useState([]);
+  const [filteredTours, setFilteredTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedTour, setSelectedTour] = useState('All');
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -17,6 +19,7 @@ const App = () => {
         }
         const data = await response.json();
         setTours(data);
+        setFilteredTours(data);
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -29,7 +32,18 @@ const App = () => {
   }, []);
 
   const removeTour = (id) => {
-    setTours(tours.filter((tour) => tour.id !== id));
+    setFilteredTours(filteredTours.filter((tour) => tour.id !== id));
+  };
+
+  const handleDropdownChange = (event) => {
+    const selected = event.target.value;
+    setSelectedTour(selected);
+
+    if (selected === 'All') {
+      setFilteredTours(tours);
+    } else {
+      setFilteredTours(tours.filter((tour) => tour.name === selected));
+    }
   };
 
   if (loading) {
@@ -40,7 +54,7 @@ const App = () => {
     return <h2>Error: {error}</h2>;
   }
 
-  if (tours.length === 0) {
+  if (filteredTours.length === 0) {
     return (
       <div>
         <h2>No Tours Left</h2>
@@ -52,11 +66,20 @@ const App = () => {
   return (
     <div>
       <h1>Tours</h1>
-      {/* Render the Gallery component and pass tours and removeTour as props */}
-      <Gallery tours={tours} onRemove={removeTour} />
+      <div>
+        <label htmlFor="tour-select">Select a Tour: </label>
+        <select id="tour-select" value={selectedTour} onChange={handleDropdownChange}>
+          <option value="All">All</option>
+          {tours.map((tour) => (
+            <option key={tour.id} value={tour.name}>
+              {tour.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <Gallery tours={filteredTours} onRemove={removeTour} />
     </div>
   );
 };
 
 export default App;
-// This is the main App component that fetches data and manages state
