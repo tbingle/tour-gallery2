@@ -52,4 +52,17 @@
     background-color: #ff6b6b;
     color: white;
   }
-  
+
+  .tour-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+  }
+
+  .tour-image {
+    width: 100%;       /* Ensures the image fills the container */
+    max-width: 400px;  /* Limits the maximum size */
+    height: auto;      /* Maintains the aspect ratio */
+    object-fit: cover; /* Ensures the image is properly cropped if necessary */
+  }

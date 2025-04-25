@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TourCard from './Components/TourCard';
+import Gallery from './Components/Gallery';  // Import Gallery component
 import './App.css'; // Make sure to import App.css for general styling
 
 const App = () => {
@@ -52,21 +52,11 @@ const App = () => {
   return (
     <div>
       <h1>Tours</h1>
-      <div className="tour-list">
-        {tours.map((tour) => (
-          <TourCard
-            key={tour.id}
-            id={tour.id}
-            name={tour.name}
-            info={tour.info}
-            image={tour.image}
-            price={tour.price}
-            onRemove={removeTour}
-          />
-        ))}
-      </div>
+      {/* Render the Gallery component and pass tours and removeTour as props */}
+      <Gallery tours={tours} onRemove={removeTour} />
     </div>
   );
 };
 
 export default App;
+// This is the main App component that fetches data and manages state
