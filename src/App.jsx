@@ -51,7 +51,7 @@ const App = () => {
   }
 
   if (error) {
-    return <h2>Error: {error}</h2>;
+    return <h2>Error: {error}</h2>;//Error handling
   }
 
   if (filteredTours.length === 0) {
